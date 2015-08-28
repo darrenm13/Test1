@@ -1,13 +1,13 @@
 # Site settings
 
-title: Project Pages
+title: Test Page
 header-img: img/home-bg.jpg
 email: darrenmm33@gmail.com
 description: "This is my first test!!"
-baseurl: "/project-pages"
-url: "http://matin-hub.github.io"
+baseurl: "/Test1"
+url: "http://darrenm13.github.io"
 github_username:  darrenm13
-project_repository: project-pages
+project_repository: Test1
 
 # Build settings
 # Don't change these variables
