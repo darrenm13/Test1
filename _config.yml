@@ -1,13 +1,13 @@
 # Site settings
 
-title: Test Page
+title: Crystal Placticy Codes
 header-img: img/home-bg.jpg
 email: darrenmm33@gmail.com
-description: "This is my first test!!"
+description: "Matching crystal placticity codes"
 baseurl: "/Test1"
 url: "http://darrenm13.github.io"
 github_username:  darrenm13
-project_repository: Test1
+project_repository: MinedProjects
 
 # Build settings
 # Don't change these variables
