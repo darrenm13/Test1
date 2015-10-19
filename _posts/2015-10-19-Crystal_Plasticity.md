@@ -17,7 +17,9 @@ This page will present code on how to match crstyal plasticity codes, using Matl
 
 #Summary
 
-The crystal placticity codes are modeled in Dream3D [1] , and need to be inputted into Abacus, a finite element analysis program [2], to determine how they will behave under different loading conditions.  The first matlab code gives the code that creates the node text file, which designate points in 3D space in abacus. The next code creates the element text file, which reads the node file and creates blocks from 8 nodes. The next code creates the node sets, which are the nodes that make up the six faces. The codes are all explained in more detail below. After the 
+The crystal placticity codes are modeled in Dream3D [1] , and need to be inputted into Abacus, a finite element analysis program [2], to determine how they will behave under different loading conditions.  
+
+The first matlab code gives the code that creates the node text file, which designate points in 3D space in abacus. The next code creates the element text file, which reads the node file and creates blocks from 8 nodes. The next code creates the node sets, which are the nodes that make up the six faces. The codes are all explained in more detail below. The two text files are entered into an input file for abacus, which then creates the 3D cube, when imported. 
 
 **Code for Node file:**
 
