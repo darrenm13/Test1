@@ -1,157 +1,296 @@
 ---
-layout:     	slide
-title:     		Presentation Headline
-date:      	2015-06-23 03:00 
-author:     	Materials Innovation
-
-theme:		night # default/beige/blood/moon/night/serif/simple/sky/solarized
-trans:		default # default/cube/page/concave/zoom/linear/fade/none
-
-horizontal:	</section></section><section markdown="1" data-background="http://matin-hub.github.io/project-pages/img/slidebackground.png"><section markdown="1">
-vertical:		</section><section markdown="1">
+layout:     post
+title:      Post Headline
+date:       2015-10-18 11:35:00
+author:     Darren Maguire
+tags: 		result
 ---
-<section markdown="1" data-background="http://matin-hub.github.io/project-pages/img/slidebackground.png"><section markdown="1">
-## {{ page.title }}
-
-<hr>
-
-#### {{ page.author }}
-
-#### {{ page.date | | date: "%I %M %p ,%a, %b %d %Y"}}
-
-{{ page.horizontal }}
 <!-- Start Writing Below in Markdown -->
 
-## F11 to Fullscreen!
 
-Showcasing Presentation Features. This template is ideal for very quickly creating decent presentations when content and simplicity is more important than excessive styling. 
+**Crystal Plasticity Codes**
+================================
+ 
+This page will present code on how to match crstyal plasticity codes, using Matlab, Dream3D, and Abaqus. 
+------------------------------------------------------------------------
+---
 
-{{ page.horizontal }}
+#Summary
 
-Seperate with {% raw  %}{{ page.horizontal }}{% endraw %} between content for horizontal slides.
+The crystal placticity codes are modeled in Dream3D [1] , and need to be inputted into Abacus, a finite element analysis program [2], to determine how they will behave under different loading conditions.  The first matlab code gives the code that creates the node text file, which designate points in 3D space in abacus. The next code creates the element text file, which reads the node file and creates blocks from 8 nodes. The next code creates the node sets, which are the nodes that make up the six faces. The codes are all explained in more detail below. After the 
 
-{{ page.vertical }}
+**Code for Node file:**
 
-Seperate with {% raw  %}{{ page.vertical }}{% endraw %} between content for vertical slides.
+The input for this function is the dimension of the cube and the name of the node text file. 
+ 
+	function [] = nodefile(in,node)
+	x = (in+1)^3;
+	y = (in+1)^2;
+	z = (in+1);     
+	cell_array = cell(x,4);      
+    for i = 1:x
+        cell_array(i,1) = {num2str(i)};
+    end
+	t = 1;
+    for i = 1:y
+        j = 0;
+        while j < z
+        cell_array(t,2) = {num2str(j)};
+        j = j+1;
+        t = t +1;
+        end
+    end
+    
+    d = 1;
+    j = 0;
+    for i = 1:y
+        j = j+1;
+        if j > z
+            j = 1;
+        end
+        t = 0;
+        while t < z 
+        cell_array(d,3) = {num2str(j-1)};
+        t = t +1 ;
+        d = d + 1;
+        end
+    end
 
-{{ page.horizontal }}
+    j = 0;
+    d = 1;
+    for i = 1:z
+        t = 0;
+        j = j+1;
+        while t < y 
+            cell_array(d,4) = {num2str(j-1)};
+            t = t+1;
+            d = d+1;
+        end
+    end
 
-Press ESC for a zoomed out overview of the presentation.
+	testfile = cell_array;
 
-{{ page.horizontal }}
+    for i = 1:x
+        for j = 2:3
+            lol = testfile{i,j};
+            lol(end+1) = '.';
+            lol(end+1) = ',';
+            testfile{i,j} = lol;
+        end
+    end
+    
+    for i = 1:x
+        help = testfile{i,4};
+        help(end+1) = '.';
+        testfile{i,4} = help;
+    end
+    
+    for i = 1:x
+        not = testfile{i,1};
+        not(end+1) = ',';
+        testfile{i,1} = not;
+    end
 
-Press B to pause the presentation.
+	fileID = fopen(node,'w');
 
-{{ page.horizontal }}
+    for i = 1:x
+        for j = 1:4
+        fprintf(fileID,'%s',testfile{i,j});
+        end
+        fprintf(fileID,'\n',testfile{i,:});
+    end
 
-#Headers
+**Code for Element file:**
+The input is the dimension of the cube and the name of the element text file.
+		
+	function [] = element(in,element)
+	x = ((in+1)^2)+in+2;
+	y = (in^2);
+	z = (in^3);
+	cell_array = cell(y,9);
+	for i = 1:z
+	    cell_array{i,1} = i;
+	end
+    cell_array{1,2} = x;
+    cell_array{1,3} = x-(in+1);
+    cell_array{1,4} = 1;
+    cell_array{1,5} = 2 + in;
+    cell_array{1,6} = x + 1;
+    cell_array{1,7} = x - in;
+    cell_array{1,8} = 2;
+    cell_array{1,9} = 3+in;
+	a = 1;
+	b = 2;
+	    for f = 2:9
+	        for i = 1:(in-1)
+	            cell_array{i+1,f} = cell_array{i,f} + a;
+	        end
+		    for i = 1:in:(in^3)
+		      cell_array{i+in,f}=cell_array{i+in-1,f}+b;
+	            for j = 1:(in-1)
+	                j = j-1;                
+	cell_array{i+in+1+j,f} = cell_array{i+in+j,f} + 1;
+	            end
+	        end
+	        for j = 1:(in-1)
+	            cst2 = 0;
+	            for i = 1:(in^2)
+	                cst = (1+in)*j;
+	                cst2 = ((in^2)+i)+((j-1)*in^2);
+	      cell_array{cst2,f} = cell_array{cst2,f} + cst;
+	            end
+	        end
+	    end
+    
+    x = cell_array(1:z,1:9);
+    
+	for i = 1:(in^3)
+	    for j = 1:9
+	        x{i,j} = num2str(x{i,j});
+	    end
+	end
+	
+		for i = 1:(in^3)
+	    for j = 1:8
+	        lol = x{i,j};
+	        lol(end+1) = ',';
+	        x{i,j} = lol;
+	    end
+	end
 
-# Header 1
+	fileID = fopen(element,'w');
 
-## Header 2
+    for i = 1:z
+    for j = 1:9
+        fprintf(fileID,'%s',x{i,j});
+    end
+        fprintf(fileID,'\n',x{i,:});
+    end
 
-### Header 3
+**Node Set Code**
+The input is the dimension of the cube and the name of the nodeset text file. 
+		
+		function [] = nodeset(in,set)
+		x0 = in+1;
+	    x1 = (in+1)^2;
+	    x2 = ((in+1)^3 - (in+1)^2 +1);
+	    x3 = (in+1)^3;
+	    k1 = 1:x1;
+	    k2 = x2:x3;
+	    
+    main_vec = cell(6,x1);
+    
+    %XY In CELL
+    for i = 1:2
+            for j = 1:x1
+                if i == 1
+                main_vec{i,j} = k1(j);
+                elseif i == 2
+                main_vec{i,j} = k2(j);
+                end
+            end
+    end
+    
+    %XZ in vector
+    xz = 1:(in+1);
+    vecxz1 = [];
+        for j = 1:x0
+            keep = xz+((in+1)^2)*(j-1);
+            vecxz1 = [ vecxz1 keep];  
+        end
+	for i = 1:x1
+	    main_vec{3,i} = vecxz1(i);
+	end
+	    xz2 = (in+1)^2 - in;
+	    helpme = xz2:x1;
+	    vecxz2 = [];
+	        for j = 1:x0
+	            keep = helpme+((in+1)^2)*(j-1);
+	            vecxz2 = [ vecxz2 keep];
+	        end     
+	    for i = 1:x1
+	        main_vec{4,i} = vecxz2(i);
+	    end   
+	        
+    %%YZ in vector
+    yz = 1:x0:(x1-in);
+    vecyz = [];
+        for j = 1:x0
+            keep = yz+((in+1)^2)*(j-1);
+            vecyz = [ vecyz keep];  
+        end
+        
+        for i = 1:x1
+            main_vec{5,i} = vecyz(i);
+        end
+        
+     yz2 = x0:x0:x1;
+     vecyz2 = [];
+        for j = 1:x0
+            keep = yz2+((in+1)^2)*(j-1);
+            vecyz2 = [ vecyz2 keep];
+        end
+        
+        for i = 1:x1
+            main_vec{6,i} = vecyz2(i);
+        end
+    
+	 fileID = fopen(set,'w');
 
-{{ page.horizontal }}
 
-#Styling
+    for i = 1:6
+        for j = 1:x1
+	        main_vec{i,j} = num2str(main_vec{i,j});
+	        lol = main_vec{i,j};
+	        lol(end+1) = ',';
+	        main_vec{i,j} = lol;
+        end
+    end
 
-**Bold**
+    for i = 1:6
+        if i == 1 || i == 2
+	         fprintf(fileID,'*Nset, nset= xy%d',i);
+	         fprintf(fileID,'\n');
+        elseif i == 3 || i == 4
+	         fprintf(fileID,'*Nset, nset= xz%d',i-2);
+	         fprintf(fileID,'\n');
+        elseif i == 5 || i == 6
+	         fprintf(fileID,'*Nset, nset= yz%d',i-4);
+	         fprintf(fileID,'\n');
+        end
+         yy = 0;
+         counter = 0;
+        for j = 1:x1
+	        x = main_vec{i,j};
+	        fprintf(fileID,'%s',x);
+	        yy = yy+1;
+	        counter = counter+1;
+		        if yy == 12
+		            fprintf(fileID,'\n');
+		            yy = 0;
+		        end
+		        if counter == x1
+		            fprintf(fileID,'\n**\n');
+		        end
+	        end
+        
+	    end
+	end
 
-*Italics*
+---
 
-***Bold and Italics***
 
-{{ page.horizontal }}
+#Links:
 
-Use MathJax for Math.
+[More on DREAM3D][1]
+[More on Abaqus][2]
 
-$$ A = \pi r^2 $$
+[1]:http://dream3d.bluequartz.net/?page_id=71
+[2]:http://www.3ds.com/products-services/simulia/products/abaqus/
 
-{{ page.horizontal }}
 
-#Lists
-
-1. Item 1
-
-2. Item 2
-
-3. Item 
-
-{{ page.horizontal }}
-
-#Links
-
-[In-Line](https://www.google.com)
-
-[I'm a reference-style link 1][1]
-
-[I'm a reference-style link 1][2]
-
-[1]:https://www.mozilla.org
-[2]:http://www.reddit.com
-
-{{ page.horizontal }}
 
 #Images
 
-Alt-Click to zoom.
+![roll over to expand](https://lh3.googleusercontent.com/B2X71nesIGE53XNSBeobkTjQYCVpphQFe2lEA-FirA=s1000 "Screenshot 2015-10-19 11.41.52.png")
 
-![Description](/project-pages/img/Logo_Fairy_Tail_right.png)
-
-{{ page.horizontal }}
-
-#Code
-
-Inline `code`.
-
-{{ page.vertical }}
-
-#Code Block
-
-	import numpy as np
-	def _set_colors():
-    HighRGB = np.array([26, 152, 80]) / 255.
-
-{{ page.horizontal }}
-
-#Quotes
-
-> War does not decide who is right, only who is **left**.
-
-{{ page.horizontal }}
-
-#HTML
-
-Now, you CAN write in HTML using this template. If you want to create HTML presentations using this framework head over to [reveal.js](http://lab.hakim.se/reveal-js/#/) for reference.  For a power-point like interactive tool for creating presentations with this theme, check [slides.com](http://slides.com/).
-
-{{ page.vertical }}
-
-# Some HTML Functionality
-
-## Color and Alignment
-
-<p align="center">This text is centered.</p>
-
-<p style="color:red">This is a red text with <span style="color:blue">blue</span> and <span style="color:green">green</span> inline text.</p>
-
-{{ page.horizontal }}
-
-## STL
-
-<div align="center"><script src="https://embed.github.com/view/3d/matin-hub/project-pages/gh-pages/img/stl/test.stl"></script></div>
-
-{{ page.horizontal }}
-
-## Data Projector
-
-<embed src="/project-pages/projectors/projector0001/" height="500px" width="100%">
-
-<!-- End Here -->
-{{ page.horizontal }}
-
-#[Print]({{ site.url }}{{ site.baseurl }}{{ page.url }}/?print-pdf#)
-
-#[Back]({{ site.url }}{{ site.baseurl }})
-
-</section></section>
