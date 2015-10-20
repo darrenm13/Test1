@@ -24,13 +24,16 @@ The first matlab code, shown below, gives the code that creates the node text fi
 
 > Node Text File
 
+The node is the first number in each column, and it is followed by the x,y, and z coordinates. Abaqus requires a period after each coordinate, and a comma after the first three numbers in each row. 
 ![Node file](https://lh3.googleusercontent.com/-9U7giWxTGkM/ViZf_i-RXsI/AAAAAAAAAAg/G1f4_SehT8g/s1000/Presentation1a.png "Presentation1a.png")
 > Element Text File
 
+The element is the first number in each column, and it is followed by the eight nodes that create it. 
 ![Element file](https://lh3.googleusercontent.com/-vnEUcW5UTaw/ViZ-BNTNB1I/AAAAAAAAABA/yNcNZ1N8FOY/s1000/Presentation1.jpg "Presentation1.jpg")
 
 > Node Set Text File
 
+The below format is required for Abaqus, and it gives the nodes on each of the six faces.
 ![enter image description here](https://lh3.googleusercontent.com/-tzUHS91TNNo/ViZ-fWXrOLI/AAAAAAAAABM/xiTX2YSrEug/s1000/presz.jpg "presz.jpg")
 
 
