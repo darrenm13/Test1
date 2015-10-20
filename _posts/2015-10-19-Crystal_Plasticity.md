@@ -6,7 +6,7 @@ author:     Darren Maguire
 tags: 		result
 ---
 <!-- Start Writing Below in Markdown -->
-#Summary
+#Using Abaqus to model Crystal Plasticity
 
 When modeling polycrystalline material using crystal plasticity UMAT with Abaqus an input microstructure needs to be created. Dream 3D is an open source tool to generate synthetic microstructures [1].
 
