@@ -9,43 +9,59 @@ tags: 		result
 
 
 **Crystal Plasticity Codes**
-================================
- 
-This page will present code on how to match crstyal plasticity codes, using Matlab, Dream3D, and Abaqus. 
-------------------------------------------------------------------------
 ---
 
 #Summary
 
-The crystal placticity codes are modeled in Dream3D [1] , and need to be inputted into Abacus, a finite element analysis program [2], to determine how they will behave under different loading conditions.  
+When modeling polycrystalline material using crystal plasticity UMAT with Abaqus an input microstructure needs to be created. Dream 3D is an open source tool to generate synthetic microstructures [1].
 
-The first matlab code gives the code that creates the node text file, which designate points in 3D space in abacus. The next code creates the element text file, which reads the node file and creates blocks from 8 nodes. The next code creates the node sets, which are the nodes that make up the six faces. The codes are all explained in more detail below. The two text files are entered into an input file for abacus, which then creates the 3D cube, when imported. 
+However, Dream3D gives the Euler angles but not the node and element lists, which can be directly inputted into abaqus. Since Abaqus has certain numbering pattern used to create elements from nodes, some special tools (e.g.Hypermesh) have to be used to generate mesh files or it has to be scripted [2]. But Dream3D has its own numbering pattern for voxels. The main goal of this project is to create a script that will match the numbering between Abaqus and Dream3D.  
+
+Matlab was chosen to create the script that will generate the node and element lists. The structure is a cubic structure with the same number of elements on each side ( n by n by n). To apply simple boundary conditions,  node sets are needed for each face of the cube. 
+The first matlab code, shown below, gives the code that creates the node text file, which designates points in 3D space in abacus. The next code creates the element text file, which designates each cubic element from 8 nodes. The two text files are entered into an input file for Abaqus, which then creates the cubic structure. The numbering patterns in Abacus and Dream3D are shown below, as are the codes.  
+
+**Here is an example of the text files for a cube of dimension 2:**
+
+> Node Text File
+
+![Node file](https://lh3.googleusercontent.com/-9U7giWxTGkM/ViZf_i-RXsI/AAAAAAAAAAg/G1f4_SehT8g/s1000/Presentation1a.png "Presentation1a.png")
+> Element Text File
+
+![Element file](https://lh3.googleusercontent.com/-vnEUcW5UTaw/ViZ-BNTNB1I/AAAAAAAAABA/yNcNZ1N8FOY/s1000/Presentation1.jpg "Presentation1.jpg")
+
+> Node Set Text File
+
+![enter image description here](https://lh3.googleusercontent.com/-tzUHS91TNNo/ViZ-fWXrOLI/AAAAAAAAABM/xiTX2YSrEug/s1000/presz.jpg "presz.jpg")
+
+
+
+
 
 **Code for Node file:**
 
-The input for this function is the dimension of the cube and the name of the node text file. 
+The two inputs are in, an integer that gives the dimension of the cube, and node, a string that is the name of the text file.
  
 	function [] = nodefile(in,node)
-	x = (in+1)^3;
-	y = (in+1)^2;
-	z = (in+1);     
-	cell_array = cell(x,4);      
-    for i = 1:x
+	 x = (in+1)^3;
+	 y = (in+1)^2;
+	 z = (in+1);     
+	 cell_array = cell(x,4);      
+     for i = 1:x
         cell_array(i,1) = {num2str(i)};
-    end
-	t = 1;
-    for i = 1:y
+     end
+	 t = 1;
+     for i = 1:y
         j = 0;
         while j < z
         cell_array(t,2) = {num2str(j)};
         j = j+1;
         t = t +1;
         end
-    end
+     end
     
-    d = 1;
-    j = 0;
-    for i = 1:y
+     d = 1;
+     j = 0;
+     for i = 1:y
         j = j+1;
         if j > z
             j = 1;
@@ -56,11 +72,11 @@ The input for this function is the dimension of the cube and the name of the nod
         t = t +1 ;
         d = d + 1;
         end
-    end
+     end
 
-    j = 0;
-    d = 1;
-    for i = 1:z
+     j = 0;
+     d = 1;
+     for i = 1:z
         t = 0;
         j = j+1;
         while t < y 
@@ -68,42 +84,43 @@ The input for this function is the dimension of the cube and the name of the nod
             t = t+1;
             d = d+1;
         end
-    end
+     end
 
-	testfile = cell_array;
+	 testfile = cell_array;
 
-    for i = 1:x
+     for i = 1:x
         for j = 2:3
             lol = testfile{i,j};
             lol(end+1) = '.';
             lol(end+1) = ',';
             testfile{i,j} = lol;
         end
-    end
+      end
     
-    for i = 1:x
+     for i = 1:x
         help = testfile{i,4};
         help(end+1) = '.';
         testfile{i,4} = help;
-    end
+     end
     
-    for i = 1:x
+     for i = 1:x
         not = testfile{i,1};
         not(end+1) = ',';
         testfile{i,1} = not;
-    end
+     end
 
-	fileID = fopen(node,'w');
+	 fileID = fopen(node,'w');
 
-    for i = 1:x
+     for i = 1:x
         for j = 1:4
         fprintf(fileID,'%s',testfile{i,j});
         end
         fprintf(fileID,'\n',testfile{i,:});
-    end
+     end
+	end
 
 **Code for Element file:**
-The input is the dimension of the cube and the name of the element text file.
+The two inputs are in, an integer that gives the dimension of the cube, and element, a string that is the name of the text file.
 		
 	function [] = element(in,element)
 	x = ((in+1)^2)+in+2;
@@ -170,7 +187,7 @@ The input is the dimension of the cube and the name of the element text file.
     end
 
 **Node Set Code**
-The input is the dimension of the cube and the name of the nodeset text file. 
+The two inputs are in, an integer that gives the dimension of the cube, and set, a string that is the name of the text file.
 		
 		function [] = nodeset(in,set)
 		x0 = in+1;
@@ -289,10 +306,7 @@ The input is the dimension of the cube and the name of the nodeset text file.
 
 [1]:http://dream3d.bluequartz.net/?page_id=71
 [2]:http://www.3ds.com/products-services/simulia/products/abaqus/
+	
 
 
-
-#Images
-
-![roll over to expand](https://lh3.googleusercontent.com/B2X71nesIGE53XNSBeobkTjQYCVpphQFe2lEA-FirA=s1000 "Screenshot 2015-10-19 11.41.52.png")
 
