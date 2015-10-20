@@ -10,10 +10,9 @@ tags: 		result
 
 #Abaqus with Dream3D to model Crystal Plasticity#
 
-When modeling polycrystalline material using crystal plasticity UMAT with Abaqus, an input microstructure needs to be created. Dream 3D, an open source tool, generates synthetic microstructures [1], but only gives the Euler angles, not the node and element lists, which can be directly inputted into abaqus. Since Abaqus has certain numbering pattern used to create elements from nodes, some special tools (e.g.Hypermesh) have to be used to generate mesh files or it has to be scripted [2]. But Dream3D has its own numbering pattern for voxels. The main goal of this project is to create a script that will match the numbering between Abaqus and Dream3D.  
+When modeling polycrystalline material using crystal plasticity UMAT with Abaqus, an input microstructure needs to be created. Dream 3D, an open source tool, generates synthetic microstructures [1], but only gives the Euler angles, not the node and element lists, which can be directly inputted into Abaqus. Since Abaqus has a certain numbering pattern used to create elements from nodes, some special tools (e.g.Hypermesh) have to be used to generate mesh files or it has to be scripted [2]. But Dream3D has its own numbering pattern for voxels. The main goal of this project is to create a script that will match the numbering between Abaqus and Dream3D.  
 
-Matlab was chosen to create the script that will generate the node and element lists. The structure is a cubic structure with the same number of elements on each side ( n by n by n). To apply simple boundary conditions,  node sets are needed for each face of the cube. 
-The first matlab code, shown below, gives the code that creates the node text file, which designates points in 3D space in Abaqus. The next code creates the element text file, which creates each cubic element from 8 nodes. The two text files are entered into an input file for Abaqus, which then creates the cubic structure. The numbering patterns in Abaqus and Dream3D are shown below, as are the codes.  
+Matlab was chosen to create the script that will generate the node and element lists. The structure is a cubic structure with the same number of elements on each side ( n by n by n). The first matlab code, shown below, gives the code that creates the node text file, which designates points in 3D space in Abaqus. The next code creates the element text file, which creates each cubic element from 8 nodes. The two text files are entered into an input file for Abaqus, which then creates the cubic structure. To apply simple boundary conditions,  node sets are needed for each face of the cube; these are given in the final code. The numbering patterns in Abaqus and Dream3D are also shown below.
 
 ---
 
@@ -21,17 +20,17 @@ The first matlab code, shown below, gives the code that creates the node text fi
 
 **Node Text File**
 
-The node is the first number in each column, and it is followed by the x,y, and z coordinates. Abaqus requires a period after each coordinate, and a comma after the first three numbers in each row. 
+The node is the first number in each column, and it is followed by the x, y, and z coordinates. Abaqus requires a period after each coordinate, and a comma after the first three numbers in each row. 
 
 ![Node file](https://lh3.googleusercontent.com/-9U7giWxTGkM/ViZf_i-RXsI/AAAAAAAAAAg/G1f4_SehT8g/s1000/Presentation1a.png "Presentation1a.png")
 
-** Example of Nodes**
+**Example of Nodes**
 
-The nodes are numbered starting from 0,0,0 and move along the x-axis. They then move up the y axis until the z = 0 plane is filled, and then they move from the z = 0 to the z = n plane. Nodes are represented by red dots with black numbers, and the elements are represented by blue numbers.
+The nodes are numbered starting from 0, 0, 0 and move along the x-axis. They then move up the y axis until the z = 0 plane is filled, and then they move from the z = 0 to the z = n plane. Nodes are represented by red dots with black numbers, and the elements are represented by blue numbers.
 
 ![enter image description here](https://lh3.googleusercontent.com/-WwWNoCln90g/ViaQ_U5gZmI/AAAAAAAAACU/WltFvEAtOZQ/s1000/Presentation15.jpg "Presentation15.jpg")
 
----
+
 
 **Element Text File**
 
@@ -45,13 +44,13 @@ The picture shows how element 1 would be created for the 2 by 2 by 2 cube. This 
 
 ![enter image description here](https://lh3.googleusercontent.com/-howPvQq22nc/ViaO7SnYyXI/AAAAAAAAACA/O8wwMLxf8j8/s1000/Presentation14.jpg "Presentation14.jpg")
 
----
+
 **Node Set Text File**
 
 The below format is required for Abaqus, and it gives the nodes on each of the six faces.
 ![enter image description here](https://lh3.googleusercontent.com/-tzUHS91TNNo/ViZ-fWXrOLI/AAAAAAAAABM/xiTX2YSrEug/s1000/presz.jpg "presz.jpg")
 
----
+
 **Synthetic Material Generated from Dream3D**
 
 ![](https://lh3.googleusercontent.com/-c34JP-3XYBc/ViagUj1b92I/AAAAAAAAACs/JR8W6mVO3tA/s1000/Screenshot+2015-10-20+16.11.19.png "Screenshot 2015-10-20 16.11.19.png")
