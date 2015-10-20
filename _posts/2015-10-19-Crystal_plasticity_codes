@@ -17,15 +17,15 @@ The first matlab code, shown below, gives the code that creates the node text fi
 
 ---
 
-**Here is an example of the text files for a 2 by 2 by 2 cube:**
+#**Example with a 2 by 2 by 2 cube:**
 
-> Node Text File
+**Node Text File**
 
 The node is the first number in each column, and it is followed by the x,y, and z coordinates. Abaqus requires a period after each coordinate, and a comma after the first three numbers in each row. 
 
 ![Node file](https://lh3.googleusercontent.com/-9U7giWxTGkM/ViZf_i-RXsI/AAAAAAAAAAg/G1f4_SehT8g/s1000/Presentation1a.png "Presentation1a.png")
 
-> Example of Nodes
+** Example of Nodes**
 
 The nodes are numbered starting from 0,0,0 and move along the x-axis. They then move up the y axis until the z = 0 plane is filled, and then they move from the z = 0 to the z = n plane. Nodes are represented by red dots with black numbers, and the elements are represented by blue numbers.
 
@@ -33,23 +33,30 @@ The nodes are numbered starting from 0,0,0 and move along the x-axis. They then 
 
 ---
 
-> Element Text File
+**Element Text File**
 
 The element is the first number in each column, and it is followed by the eight nodes that create it. 
 
 ![Element file](https://lh3.googleusercontent.com/-vnEUcW5UTaw/ViZ-BNTNB1I/AAAAAAAAABA/yNcNZ1N8FOY/s1000/Presentation1.jpg "Presentation1.jpg")
 
-> Example of Element
+**Example of Element**
 
 The picture shows how element 1 would be created for the 2 by 2 by 2 cube. This numbering pattern holds true for all of the elements.
 
 ![enter image description here](https://lh3.googleusercontent.com/-howPvQq22nc/ViaO7SnYyXI/AAAAAAAAACA/O8wwMLxf8j8/s1000/Presentation14.jpg "Presentation14.jpg")
 
 ---
-> Node Set Text File
+**Node Set Text File**
 
 The below format is required for Abaqus, and it gives the nodes on each of the six faces.
 ![enter image description here](https://lh3.googleusercontent.com/-tzUHS91TNNo/ViZ-fWXrOLI/AAAAAAAAABM/xiTX2YSrEug/s1000/presz.jpg "presz.jpg")
+
+---
+**Synthetic Material Generated from Dream3D**
+
+![](https://lh3.googleusercontent.com/-c34JP-3XYBc/ViagUj1b92I/AAAAAAAAACs/JR8W6mVO3tA/s1000/Screenshot+2015-10-20+16.11.19.png "Screenshot 2015-10-20 16.11.19.png")
+
+http://materials-informatics-class-fall2015.github.io/MIC-grain-growth/2015/08/29/microstructure-generation-using-dream-3d/
 
 ---
 
@@ -318,6 +325,7 @@ The two inputs are 'in', an integer that gives the dimension of the cube, and 's
 #Links:
 
 [More on DREAM3D][1]
+
 [More on Abaqus][2]
 
 [1]:http://dream3d.bluequartz.net/?page_id=71
