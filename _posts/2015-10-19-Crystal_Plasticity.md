@@ -22,16 +22,18 @@ The first matlab code, shown below, gives the code that creates the node text fi
 
 ---
 
-**Here is an example of the text files for a cube of dimension 2:**
+**Here is an example of the text files for a 2 by 2 by 2 **
 
 > Node Text File
 
 The node is the first number in each column, and it is followed by the x,y, and z coordinates. Abaqus requires a period after each coordinate, and a comma after the first three numbers in each row. 
+
 ![Node file](https://lh3.googleusercontent.com/-9U7giWxTGkM/ViZf_i-RXsI/AAAAAAAAAAg/G1f4_SehT8g/s1000/Presentation1a.png "Presentation1a.png")
 
 > Example of Nodes
 
 They are numbered starting from 0,0,0 and move along the x-axis. They then move up the y axis until the z = 0 plane is filled, and then they move from z = 0 to the z = n plane. Nodes are represented by red dots with black numbers, and the elements are represented by blue numbers.
+
 ![enter image description here](https://lh3.googleusercontent.com/-WwWNoCln90g/ViaQ_U5gZmI/AAAAAAAAACU/WltFvEAtOZQ/s1000/Presentation15.jpg "Presentation15.jpg")
 
 ---
@@ -39,10 +41,13 @@ They are numbered starting from 0,0,0 and move along the x-axis. They then move 
 > Element Text File
 
 The element is the first number in each column, and it is followed by the eight nodes that create it. 
+
 ![Element file](https://lh3.googleusercontent.com/-vnEUcW5UTaw/ViZ-BNTNB1I/AAAAAAAAABA/yNcNZ1N8FOY/s1000/Presentation1.jpg "Presentation1.jpg")
 
 > Example of Element
+
 The picture shows how element 1 would be created for the 2 by 2 by 2 cube. This numbering pattern holds true for all of the elements.
+
 ![enter image description here](https://lh3.googleusercontent.com/-howPvQq22nc/ViaO7SnYyXI/AAAAAAAAACA/O8wwMLxf8j8/s1000/Presentation14.jpg "Presentation14.jpg")
 
 ---
@@ -55,7 +60,7 @@ The below format is required for Abaqus, and it gives the nodes on each of the s
 
 **Code for Node file:**
 
-The two inputs are in, an integer that gives the dimension of the cube, and node, a string that is the name of the text file.
+The two inputs are 'in', an integer that gives the dimension of the cube, and 'node', a string that is the name of the text file.
  
 	function [] = nodefile(in,node)
 	 x = (in+1)^3;
@@ -136,7 +141,7 @@ The two inputs are in, an integer that gives the dimension of the cube, and node
 	end
 
 **Code for Element file:**
-The two inputs are in, an integer that gives the dimension of the cube, and element, a string that is the name of the text file.
+The two inputs are 'in', an integer that gives the dimension of the cube, and 'element', a string that is the name of the text file.
 		
 	function [] = element(in,element)
 	x = ((in+1)^2)+in+2;
@@ -203,7 +208,7 @@ The two inputs are in, an integer that gives the dimension of the cube, and elem
     end
 
 **Node Set Code**
-The two inputs are in, an integer that gives the dimension of the cube, and set, a string that is the name of the text file.
+The two inputs are 'in', an integer that gives the dimension of the cube, and 'set', a string that is the name of the text file.
 		
 		function [] = nodeset(in,set)
 		x0 = in+1;
