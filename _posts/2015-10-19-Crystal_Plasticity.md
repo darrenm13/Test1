@@ -6,9 +6,9 @@ author:     Darren Maguire
 tags: 		result
 ---
 <!-- Start Writing Below in Markdown -->
-#Using Abaqus to model Crystal Plasticity
+#Abaqus with Dream3D to model Crystal Plasticity#
 
-When modeling polycrystalline material using crystal plasticity UMAT with Abaqus an input microstructure needs to be created. Dream 3D is an open source tool to generate synthetic microstructures [1].
+When modeling polycrystalline material using crystal plasticity UMAT with Abaqus, an input microstructure needs to be created. Dream 3D is an open source tool to generate synthetic microstructures [1].
 
 However, Dream3D gives the Euler angles but not the node and element lists, which can be directly inputted into abaqus. Since Abaqus has certain numbering pattern used to create elements from nodes, some special tools (e.g.Hypermesh) have to be used to generate mesh files or it has to be scripted [2]. But Dream3D has its own numbering pattern for voxels. The main goal of this project is to create a script that will match the numbering between Abaqus and Dream3D.  
 
