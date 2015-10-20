@@ -55,7 +55,7 @@ The below format is required for Abaqus, and it gives the nodes on each of the s
 
 ![](https://lh3.googleusercontent.com/-c34JP-3XYBc/ViagUj1b92I/AAAAAAAAACs/JR8W6mVO3tA/s1000/Screenshot+2015-10-20+16.11.19.png "Screenshot 2015-10-20 16.11.19.png")
 
-http://materials-informatics-class-fall2015.github.io/MIC-grain-growth/2015/08/29/microstructure-generation-using-dream-3d/
+[http://materials-informatics-class-fall2015.github.io/MIC-grain-growth/2015/08/29/microstructure-generation-using-dream-3d/](http://materials-informatics-class-fall2015.github.io/MIC-grain-growth/2015/08/29/microstructure-generation-using-dream-3d/)
 
 ---
 
