@@ -48,12 +48,12 @@ The picture shows how element 1 would be created for the 2 by 2 by 2 cube. This 
 **Node Set Text File**
 
 The below format is required for Abaqus, and it gives the nodes on each of the six faces.
-![enter image description here](https://lh3.googleusercontent.com/-tzUHS91TNNo/ViZ-fWXrOLI/AAAAAAAAABM/xiTX2YSrEug/s1000/presz.jpg "presz.jpg")
+![](https://lh3.googleusercontent.com/-tzUHS91TNNo/ViZ-fWXrOLI/AAAAAAAAABM/xiTX2YSrEug/s1000/presz.jpg "presz.jpg")
 
 
 **Synthetic Material Generated from Dream3D**
 
-![]([https://lh3.googleusercontent.com/-c34JP-3XYBc/ViagUj1b92I/AAAAAAAAACs/JR8W6mVO3tA/s1000/Screenshot+2015-10-20+16.11.19.png](http://materials-informatics-class-fall2015.github.io/MIC-grain-growth/2015/08/29/microstructure-generation-using-dream-3d/) "Screenshot 2015-10-20 16.11.19.png")
+![](https://lh3.googleusercontent.com/-c34JP-3XYBc/ViagUj1b92I/AAAAAAAAACs/JR8W6mVO3tA/s1000/Screenshot+2015-10-20+16.11.19.png 2015-10-20 16.11.19.png")
 
 
 http://materials-informatics-class-fall2015.github.io/MIC-grain-growth/2015/08/29/microstructure-generation-using-dream-3d/
